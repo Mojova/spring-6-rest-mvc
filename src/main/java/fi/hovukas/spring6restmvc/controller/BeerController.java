@@ -2,7 +2,7 @@ package fi.hovukas.spring6restmvc.controller;
 
 import fi.hovukas.spring6restmvc.model.Beer;
 import fi.hovukas.spring6restmvc.services.BeerService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/api/v1/beer")
 public class BeerController {
@@ -29,11 +29,11 @@ public class BeerController {
     public Beer getBeerById(@PathVariable("beerId") UUID beerId) {
 
         log.debug("Get beer by id in controller");
-        return  beerService.getBeerById(beerId);
+        return beerService.getBeerById(beerId);
     }
 
     @PostMapping
-    public ResponseEntity<String> handlePost(@RequestBody  Beer beer) {
+    public ResponseEntity<String> handlePost(@RequestBody Beer beer) {
         Beer savedBeer = beerService.saveNewBeer(beer);
 
         HttpHeaders headers = new HttpHeaders();

@@ -1,6 +1,5 @@
 package fi.hovukas.spring6restmvc.controller;
 
-import fi.hovukas.spring6restmvc.model.Beer;
 import fi.hovukas.spring6restmvc.model.Customer;
 import fi.hovukas.spring6restmvc.services.CustomerService;
 import lombok.AllArgsConstructor;
