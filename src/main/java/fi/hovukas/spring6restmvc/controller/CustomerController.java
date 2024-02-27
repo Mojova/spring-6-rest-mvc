@@ -1,6 +1,6 @@
 package fi.hovukas.spring6restmvc.controller;
 
-import fi.hovukas.spring6restmvc.model.Customer;
+import fi.hovukas.spring6restmvc.model.CustomerDTO;
 import fi.hovukas.spring6restmvc.services.CustomerService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -19,17 +19,17 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Customer> listCustomers() {
+    public List<CustomerDTO> listCustomers() {
         return customerService.listCustomers();
     }
 
     @RequestMapping(value = "{customerId}", method = RequestMethod.GET)
-    public Customer getCustomerById(@PathVariable("customerId") UUID customerId) {
+    public CustomerDTO getCustomerById(@PathVariable("customerId") UUID customerId) {
         return customerService.getCustomerById(customerId).orElseThrow(NotFoundException::new);
     }
 
     @PostMapping
-    public ResponseEntity<String> addCustomer(@RequestBody Customer customer) {
+    public ResponseEntity<String> addCustomer(@RequestBody CustomerDTO customer) {
         var savedCustomer = customerService.addCustomer(customer);
 
         HttpHeaders headers = new HttpHeaders();
@@ -39,7 +39,7 @@ public class CustomerController {
     }
 
     @PutMapping("{customerId}")
-    public ResponseEntity<String> updateCustomer(@PathVariable UUID customerId, @RequestBody Customer customer) {
+    public ResponseEntity<String> updateCustomer(@PathVariable UUID customerId, @RequestBody CustomerDTO customer) {
         customerService.updateCustomer(customerId, customer);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -53,7 +53,7 @@ public class CustomerController {
     }
 
     @PatchMapping("{customerId}")
-    public ResponseEntity<String> patchById(@PathVariable UUID customerId, @RequestBody Customer customer) {
+    public ResponseEntity<String> patchById(@PathVariable UUID customerId, @RequestBody CustomerDTO customer) {
 
         customerService.patchCustomerById(customerId, customer);
 
