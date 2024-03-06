@@ -40,14 +40,19 @@ public class CustomerController {
 
     @PutMapping("{customerId}")
     public ResponseEntity<String> updateCustomer(@PathVariable UUID customerId, @RequestBody CustomerDTO customer) {
-        customerService.updateCustomer(customerId, customer);
+
+        if (customerService.updateCustomer(customerId, customer).isEmpty()) {
+            throw new NotFoundException();
+        }
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("{customerId}")
     public ResponseEntity<String> deleteCustomer(@PathVariable UUID customerId) {
-        customerService.deleteCustomer(customerId);
+         if (!customerService.deleteCustomer(customerId)) {
+             throw new NotFoundException();
+         }
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

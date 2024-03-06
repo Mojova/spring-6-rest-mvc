@@ -102,7 +102,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public void patchBeerById(UUID beerId, BeerDTO beer) {
+    public Optional<BeerDTO> patchBeerById(UUID beerId, BeerDTO beer) {
         var existingBeer = beerMap.get(beerId);
 
         if (StringUtils.hasText(beer.getBeerName())) {
@@ -121,6 +121,8 @@ public class BeerServiceImpl implements BeerService {
             existingBeer.setQuantityOnHand(beer.getQuantityOnHand());
         }
         existingBeer.setUpdateDate(LocalDateTime.now());
+
+        return Optional.of(existingBeer);
     }
 
     @Override

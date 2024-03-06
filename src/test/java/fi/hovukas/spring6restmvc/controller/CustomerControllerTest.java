@@ -103,6 +103,8 @@ class CustomerControllerTest {
     void testUpdateCustomer() {
         CustomerDTO customer = customerServiceImpl.listCustomers().get(0);
 
+        given(customerService.updateCustomer(any(), any())).willReturn(Optional.of(customer));
+
         mockMvc.perform(put("/api/v1/customer/" + customer.getId())
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -116,6 +118,8 @@ class CustomerControllerTest {
     @Test
     void testDeleteCustomer() {
         CustomerDTO customer = customerServiceImpl.listCustomers().get(0);
+
+        given(customerService.deleteCustomer(any())).willReturn(true);
 
         mockMvc.perform(delete("/api/v1/customer/" + customer.getId())
                         .accept(MediaType.APPLICATION_JSON))
