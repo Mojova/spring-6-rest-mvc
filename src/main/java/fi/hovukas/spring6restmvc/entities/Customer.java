@@ -29,4 +29,7 @@ public class Customer {
     private String customerName;
     private LocalDateTime createdDate;
     private LocalDateTime updateDate;
+
+    @Column(length = 255)
+    private String email;
 }
