@@ -60,7 +60,7 @@ class BeerControllerIT {
     void testListBeers() {
         var dtos = beerController.listBeers();
 
-        assertThat(dtos.size()).isEqualTo(2);
+        assertThat(dtos.size()).isEqualTo(2412);
     }
 
     @Test
