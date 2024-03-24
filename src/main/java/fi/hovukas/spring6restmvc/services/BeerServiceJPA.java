@@ -1,7 +1,9 @@
 package fi.hovukas.spring6restmvc.services;
 
+import fi.hovukas.spring6restmvc.entities.Beer;
 import fi.hovukas.spring6restmvc.mappers.BeerMapper;
 import fi.hovukas.spring6restmvc.model.BeerDTO;
+import fi.hovukas.spring6restmvc.model.BeerStyle;
 import fi.hovukas.spring6restmvc.repositories.BeerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
@@ -30,11 +32,40 @@ public class BeerServiceJPA implements BeerService {
     }
 
     @Override
-    public List<BeerDTO> listBeers() {
-        return beerRepository.findAll()
+    public List<BeerDTO> listBeers(String beerName, BeerStyle beerStyle, Boolean showInventory) {
+
+        List<Beer> beerList;
+
+        if (StringUtils.hasText(beerName) && beerStyle != null) {
+            beerList = listBeersByNameAndStyle(beerName, beerStyle);
+        } else if (StringUtils.hasText(beerName)) {
+            beerList = listBeersByName(beerName);
+        } else if (beerStyle != null) {
+            beerList = listBeersByStyle(beerStyle);
+        } else {
+            beerList = beerRepository.findAll();
+        }
+
+        if (showInventory != null && !showInventory) {
+            beerList.forEach(beer -> beer.setQuantityOnHand(null));
+        }
+
+        return beerList
                 .stream()
                 .map(beerMapper::beerToBeerDto)
                 .collect(Collectors.toList());
+    }
+
+    public List<Beer> listBeersByName(String beerName) {
+        return beerRepository.findAllByBeerNameIsLikeIgnoreCase("%" + beerName + "%");
+    }
+
+    public List<Beer> listBeersByStyle(BeerStyle beerStyle) {
+        return beerRepository.findAllByBeerStyle(beerStyle);
+    }
+
+    public List<Beer> listBeersByNameAndStyle(String beerName, BeerStyle beerStyle) {
+        return beerRepository.findAllByBeerNameIsLikeIgnoreCaseAndBeerStyle("%" + beerName + "%", beerStyle);
     }
 
     @Override
